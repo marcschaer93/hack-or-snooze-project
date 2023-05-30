@@ -23,12 +23,16 @@ function generateStoryMarkup(story, showDeleteBtn = false) {
   console.debug("generateStoryMarkup", story);
 
   const hostName = story.getHostName();
+
+  // if a user is logged in, show favorite/not-favorite star
+  const showStar = Boolean(currentUser);
+
   return $(`
       <li id="${story.storyId}">
         <div>
         ${showDeleteBtn ? getDeleteBtnHTML() : ""}
-        <div><button id="favoriteIcon">♥</button></div>
-    
+        ${showStar ? getHeartHTML(story, currentUser) : ""}
+
         <a href="${story.url}" target="a_blank" class="story-link">
           ${story.title}
         </a>
@@ -46,11 +50,13 @@ function getDeleteBtnHTML() {
   <button id="deleteBtn">delete</button>
   `;
 }
-// function getHeart() {
-//   return `
-//   <span><i class="active">♥</i></span>
-//   `
-// }
+function getHeartHTML(story, user) {
+  const isFavorite = user.isFavorite(story);
+  const heartType = isFavorite ? "active" : "not-active";
+  return `
+  <div><button id="favoriteIcon" class=${heartType}>♥</button></div>
+  `;
+}
 
 function putStoriesOnPage() {
   console.debug("putStoriesOnPage");
@@ -160,11 +166,23 @@ async function toggleFavoriteStatus(evt) {
 
   if ($favoriteIcon.hasClass("active")) {
     evt.target.classList.toggle("active");
+    $closestLi.remove();
+
     await currentUser.deleteFavorite(storyId);
   } else {
     evt.target.classList.toggle("active");
     await currentUser.addFavorite(storyId);
   }
+
+  // if ($tgt.hasClass("fas")) {
+  //     // currently a favorite: remove from user's fav list and change star
+  //     await currentUser.removeFavorite(story);
+  //     $tgt.closest("i").toggleClass("fas far");
+  //   } else {
+  //     // currently not a favorite: do the opposite
+  //     await currentUser.addFavorite(story);
+  //     $tgt.closest("i").toggleClass("fas far");
+  //   }
 }
 
 $allStoryLists.on("click", "#favoriteIcon", toggleFavoriteStatus);

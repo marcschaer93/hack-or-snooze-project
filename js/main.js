@@ -34,7 +34,7 @@ const $favoriteIcon = $("#favoriteIcon");
  */
 
 function hidePageComponents() {
-  const components = [$allStoriesList, $loginForm, $signupForm];
+  const components = [$allStoryLists, $loginForm, $signupForm, $submitForm];
   components.forEach((c) => c.hide());
 }
 

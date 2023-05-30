@@ -224,6 +224,14 @@ class User {
     this.favorites = this.favorites.filter((story) => {
       story.storyId !== storyId;
     });
+
+    // let deletefa = this.favorites.filter((story) => {
+    //   story.storyId === storyId;
+    // });
+
+    // const story = storyList.stories.find((s) => s.storyId === storyId);
+    // this.favorites.remove(deletefa);
+
     console.log("this.favorites.delete", this.favorites);
     await this.addOrDeleteFavorite(favoriteStatus, storyId);
   }
@@ -247,5 +255,9 @@ class User {
       data: { token },
       method: method,
     });
+  }
+
+  isFavorite(story) {
+    return this.favorites.some((s) => s.storyId === story.storyId);
   }
 }
