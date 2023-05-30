@@ -37,6 +37,10 @@
   display: block;
 }
 
-.not-active {
+.active {
   color: brown;
+}
+
+#favoriteIcon {
+  outline: none;
 }

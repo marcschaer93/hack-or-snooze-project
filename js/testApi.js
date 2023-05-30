@@ -21,3 +21,9 @@ async function getData() {
 }
 
 getData();
+
+//
+{
+  /* <span><i id='favoriteBtn' class="not-active">♥</i></span>
+<div><p id="favoriteIcon" class="not-active">♥</p></div> */
+}

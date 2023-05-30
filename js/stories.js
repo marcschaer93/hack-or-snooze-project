@@ -27,7 +27,8 @@ function generateStoryMarkup(story, showDeleteBtn = false) {
       <li id="${story.storyId}">
         <div>
         ${showDeleteBtn ? getDeleteBtnHTML() : ""}
-        <span><i id='favoriteBtn' class="not-active">♥</i></span>
+        <div><button id="favoriteIcon">♥</button></div>
+    
         <a href="${story.url}" target="a_blank" class="story-link">
           ${story.title}
         </a>
@@ -82,6 +83,27 @@ function putMyStoriesOnPage() {
 
   $myStories.show();
 }
+function putMyFavoritesStoriesOnPage() {
+  console.debug("putMyFavoritesStoriesOnPage");
+  $myFavoriteStories.empty();
+  console.log("$myFavoriteStories, hide", $myFavoriteStories);
+
+  // check and update "my-favorite-stories-list" changes
+  if (currentUser.favorites.length === 0) {
+    $myFavoriteStories.append(
+      "<h5>No Favorite stories added by user yet!</h5>"
+    );
+  } else {
+    // loop through all of users stories and generate HTML for them
+    for (let story of currentUser.favorites) {
+      const $story = generateStoryMarkup(story);
+      $myFavoriteStories.append($story);
+    }
+  }
+  console.log("$myFavoriteStories, show", $myFavoriteStories);
+
+  $myFavoriteStories.show();
+}
 
 async function deleteStory(evt) {
   console.debug("deleteStory");
@@ -129,9 +151,20 @@ $submitForm.on("submit", submitNewStory);
 // $favoriteBtn.on("click", addOrRemoveFavorite);
 // $myStories.on("click", "#favoriteBtn", addOrRemoveFavorite);
 
-async function addOrRemoveFavorite(evt) {
-  console.debug("addOrRemoveFavorite");
-  evt.target.classList.toggle("not-active");
+async function toggleFavoriteStatus(evt) {
+  console.debug("toggleFavoriteStatus");
+
+  const $closestLi = $(evt.target).closest("li");
+  const $favoriteIcon = $closestLi.find("#favoriteIcon");
+  const storyId = $closestLi.attr("id");
+
+  if ($favoriteIcon.hasClass("active")) {
+    evt.target.classList.toggle("active");
+    await currentUser.deleteFavorite(storyId);
+  } else {
+    evt.target.classList.toggle("active");
+    await currentUser.addFavorite(storyId);
+  }
 }
 
-$myStories.on("click", "#favoriteBtn", addOrRemoveFavorite);
+$allStoryLists.on("click", "#favoriteIcon", toggleFavoriteStatus);

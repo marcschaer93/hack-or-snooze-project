@@ -28,6 +28,7 @@ function navAllStories(evt) {
   console.debug("navAllStories", evt);
   hidePageComponents();
   putStoriesOnPage();
+  $submitForm.hide();
 }
 
 $body.on("click", "#nav-all", navAllStories);
@@ -49,16 +50,28 @@ function navMyStories(evt) {
   console.debug("navMyStories", evt);
   hidePageComponents();
   putMyStoriesOnPage();
+
   $myStories.show();
 }
 
 $navMyStories.on("click", navMyStories);
 
+function navMyFavorites(evt) {
+  console.debug("navMyFavorites", evt);
+  hidePageComponents();
+  putMyFavoritesStoriesOnPage();
+
+  $myFavoriteStories.show();
+}
+
+$navMyFavorites.on("click", navMyFavorites);
 /** When a user first logins in, update the navbar to reflect that. */
 
 function updateNavOnLogin() {
   console.debug("updateNavOnLogin");
-  $(".main-nav-links").show();
+  // $(".main-nav-links").show();
+  $(".main-nav-links").css("display", "flex");
+
   $navLogin.hide();
   $navLogOut.show();
   $navUserProfile.text(`${currentUser.username}`).show();
