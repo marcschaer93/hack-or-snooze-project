@@ -2,6 +2,13 @@
 
 .stories-list {
   margin: 20px 5px;
+  display: block;
+  list-style-type: decimal;
+  margin-block-start: 1em;
+  margin-block-end: 1em;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
+  padding-inline-start: 40px;
 }
 
 .stories-list > li {
@@ -21,7 +28,7 @@
 .story-link {
   color: black;
   font-size: 0.85rem;
-  font-weight: normal;
+  font-weight: bold;
   margin: 18px 0;
 }
 
@@ -31,16 +38,36 @@
 
 .story-author {
   margin-left: 2em;
+  color: green;
 }
 
 .story-user {
   display: block;
+  color: #ffa600;
 }
 
 .active {
   color: brown;
 }
 
-#favoriteIcon {
-  outline: none;
+/* #line-1 {
+  display: flex;
+} */
+
+.main-story-content {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.delete-heart-icon {
+  /* display: flex; */
+}
+
+.inner-li {
+  display: flex;
+  gap: 10px;
+}
+
+.inner-title-host {
 }

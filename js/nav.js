@@ -60,8 +60,8 @@ $navMyFavorites.on("click", navMyFavorites);
 
 function updateNavOnLogin() {
   console.debug("updateNavOnLogin");
-  // $(".main-nav-links").show();
-  $(".main-nav-links").css("display", "flex");
+  $(".main-nav-links").show();
+  // $(".main-nav-links").css("display", "flex");
 
   $navLogin.hide();
   $navLogOut.show();

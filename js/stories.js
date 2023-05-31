@@ -25,35 +25,58 @@ function generateStoryMarkup(story, showDeleteBtn = false) {
   const hostName = story.getHostName();
 
   // if a user is logged in, show favorite/not-favorite star
-  const showStar = Boolean(currentUser);
+  const showHeart = Boolean(currentUser);
 
   return $(`
       <li id="${story.storyId}">
-        <div>
-        ${showDeleteBtn ? getDeleteBtnHTML() : ""}
-        ${showStar ? getHeartHTML(story, currentUser) : ""}
-        <a href="${story.url}" target="a_blank" class="story-link">
-          ${story.title}
-        </a>
-        <small class="story-hostname">(${hostName})</small>
-        <small class="story-author">by ${story.author}</small>
-        <small class="story-user">posted by ${story.username}</small>
+        <div class="inner-li">
+          <div class="delete-heart-icon">
+            ${showDeleteBtn ? getDeleteBtnHTML() : ""}
+            ${showHeart ? getHeartHTML(story, currentUser) : ""}
+          </div>
+          <div class="main-story-content">
+              <div class="inner-titel-host">
+                <a href="${story.url}" target="a_blank" class="story-link">${
+    story.title
+  }
+                </a>
+                <small class="story-hostname">(${hostName})</small>
+              </div>
+                <small class="story-author">by ${story.author}</small>
+                <small class="story-user">posted by ${story.username}</small>
+          </div>
         </div>
+        <hr>
       </li>
     `);
 }
 
 /** Gets list of stories from server, generates their HTML, and puts on page. */
+// function getDeleteBtnHTML() {
+//   return `
+//   <button id="deleteBtn">delete</button>
+//   `;
+// }
+
 function getDeleteBtnHTML() {
   return `
-  <button id="deleteBtn">delete</button>
+  <span><i id="deleteBtn" class="fa-sharp fa-solid fa-trash"></i></span>
   `;
 }
+
+// function getHeartHTML(story, user) {
+//   const isFavorite = user.isFavorite(story);
+//   const heartType = isFavorite ? "active" : "not-active";
+//   return `
+//   <div><button id="favoriteIcon" class=${heartType}>♥</button></div>
+//   `;
+// }
+
 function getHeartHTML(story, user) {
   const isFavorite = user.isFavorite(story);
-  const heartType = isFavorite ? "active" : "not-active";
+  const heartType = isFavorite ? "fa-solid" : "fa-regular";
   return `
-  <div><button id="favoriteIcon" class=${heartType}>♥</button></div>
+  <span><i class="${heartType} fa-heart"></i></span>
   `;
 }
 
@@ -148,39 +171,22 @@ async function submitNewStory(evt) {
 
 $submitForm.on("submit", submitNewStory);
 
-// async function addOrRemoveFavorite(evt) {
-//   console.debug("addOrRemoveFavorite");
-//   evt.target.classList.toggle("not-active");
-// }
-
-// $favoriteBtn.on("click", addOrRemoveFavorite);
-// $myStories.on("click", "#favoriteBtn", addOrRemoveFavorite);
-
 async function toggleFavoriteStatus(evt) {
   console.debug("toggleFavoriteStatus");
 
   const $closestLi = $(evt.target).closest("li");
-  const $favoriteIcon = $closestLi.find("#favoriteIcon");
   const storyId = $closestLi.attr("id");
   const story = storyList.stories.find((s) => s.storyId === storyId);
   const $target = $(evt.target);
 
-  if ($target.hasClass("active")) {
-    $target.closest("button").toggleClass("active not-active");
+  if ($target.hasClass("fa-solid")) {
+    $target.closest("i").toggleClass("fa-solid fa-regular");
     await currentUser.deleteFavorite(story);
     putMyFavoritesStoriesOnPage();
-
-    // notFavoriteAnymore(evt, $closestLi);
   } else {
-    $target.closest("button").toggleClass("active not-active");
+    $target.closest("i").toggleClass("fa-solid fa-regular");
     await currentUser.addFavorite(story);
   }
 }
 
-$allStoryLists.on("click", "#favoriteIcon", toggleFavoriteStatus);
-
-// function notFavoriteAnymore(evt, $closestLi) {
-//   $myFavoriteStories.on("click", function (evt) {
-//     $closestLi.remove();
-//   });
-// }
+$allStoryLists.on("click", ".fa-heart", toggleFavoriteStatus);
