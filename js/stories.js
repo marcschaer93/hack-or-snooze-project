@@ -32,7 +32,6 @@ function generateStoryMarkup(story, showDeleteBtn = false) {
         <div>
         ${showDeleteBtn ? getDeleteBtnHTML() : ""}
         ${showStar ? getHeartHTML(story, currentUser) : ""}
-
         <a href="${story.url}" target="a_blank" class="story-link">
           ${story.title}
         </a>
@@ -106,9 +105,9 @@ function putMyFavoritesStoriesOnPage() {
       $myFavoriteStories.append($story);
     }
   }
-  console.log("$myFavoriteStories, show", $myFavoriteStories);
 
   $myFavoriteStories.show();
+  console.log("$myFavoriteStories, show", $myFavoriteStories);
 }
 
 async function deleteStory(evt) {
@@ -117,9 +116,9 @@ async function deleteStory(evt) {
   const $closestLi = $(evt.target).closest("li");
   const storyId = $closestLi.attr("id");
 
+  // await storyList.removeStory(currentUser, storyId);
   await storyList.removeStory(currentUser, storyId);
-
-  await putMyStoriesOnPage();
+  putMyStoriesOnPage();
 }
 
 $myStories.on("click", "#deleteBtn", deleteStory);
@@ -163,26 +162,25 @@ async function toggleFavoriteStatus(evt) {
   const $closestLi = $(evt.target).closest("li");
   const $favoriteIcon = $closestLi.find("#favoriteIcon");
   const storyId = $closestLi.attr("id");
+  const story = storyList.stories.find((s) => s.storyId === storyId);
+  const $target = $(evt.target);
 
-  if ($favoriteIcon.hasClass("active")) {
-    evt.target.classList.toggle("active");
-    $closestLi.remove();
+  if ($target.hasClass("active")) {
+    $target.closest("button").toggleClass("active not-active");
+    await currentUser.deleteFavorite(story);
+    putMyFavoritesStoriesOnPage();
 
-    await currentUser.deleteFavorite(storyId);
+    // notFavoriteAnymore(evt, $closestLi);
   } else {
-    evt.target.classList.toggle("active");
-    await currentUser.addFavorite(storyId);
+    $target.closest("button").toggleClass("active not-active");
+    await currentUser.addFavorite(story);
   }
-
-  // if ($tgt.hasClass("fas")) {
-  //     // currently a favorite: remove from user's fav list and change star
-  //     await currentUser.removeFavorite(story);
-  //     $tgt.closest("i").toggleClass("fas far");
-  //   } else {
-  //     // currently not a favorite: do the opposite
-  //     await currentUser.addFavorite(story);
-  //     $tgt.closest("i").toggleClass("fas far");
-  //   }
 }
 
 $allStoryLists.on("click", "#favoriteIcon", toggleFavoriteStatus);
+
+// function notFavoriteAnymore(evt, $closestLi) {
+//   $myFavoriteStories.on("click", function (evt) {
+//     $closestLi.remove();
+//   });
+// }

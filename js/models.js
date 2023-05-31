@@ -98,13 +98,12 @@ class StoryList {
       data: { token: user.loginToken },
     });
 
-    this.stories = this.stories.filter((story) => {
-      story.storyId !== storyId;
-    });
+    // filter out the story whose ID we are removing
+    this.stories = this.stories.filter((story) => story.storyId !== storyId);
 
-    user.ownStories = user.ownStories.filter((story) => {
-      story.storyId !== storyId;
-    });
+    // do the same thing for the user's list of stories & their favorites
+    user.ownStories = user.ownStories.filter((s) => s.storyId !== storyId);
+    user.favorites = user.favorites.filter((s) => s.storyId !== storyId);
   }
 }
 
@@ -219,39 +218,44 @@ class User {
     }
   }
 
-  async deleteFavorite(storyId) {
-    let favoriteStatus = false;
-    this.favorites = this.favorites.filter((story) => {
-      story.storyId !== storyId;
-    });
+  // async deleteFavorite(story) {
+  //   let favoriteStatus = false;
+  //   // this.favorites = this.favorites.filter((story) => {
+  //   //   story.storyId !== storyId;
+  //   // });
 
-    // let deletefa = this.favorites.filter((story) => {
-    //   story.storyId === storyId;
-    // });
+  //   // console.log("this.favorites.delete", this.favorites);
+  //   // await this.addOrDeleteFavorite(favoriteStatus, storyId);
+
+  //   this.favorites = this.favorites.filter((s) => s.storyId !== story.storyId);
+
+  //   await this.addOrRemoveFavorite(favoriteStatus, story);
+  // }
+
+  async deleteFavorite(story) {
+    let favoriteStatus = false;
+
+    this.favorites = this.favorites.filter((s) => s.storyId !== story.storyId);
+    await this.addOrDeleteFavorite(favoriteStatus, story);
+  }
+
+  async addFavorite(story) {
+    let favoriteStatus = true;
 
     // const story = storyList.stories.find((s) => s.storyId === storyId);
-    // this.favorites.remove(deletefa);
-
-    console.log("this.favorites.delete", this.favorites);
-    await this.addOrDeleteFavorite(favoriteStatus, storyId);
-  }
-
-  async addFavorite(storyId) {
-    const story = storyList.stories.find((s) => s.storyId === storyId);
-
-    let favoriteStatus = true;
+    // this.favorites.push(story);
+    // console.log("this.favorites,add", this.favorites);
     this.favorites.push(story);
-    console.log("this.favorites,add", this.favorites);
-    await this.addOrDeleteFavorite(favoriteStatus, storyId);
+
+    await this.addOrDeleteFavorite(favoriteStatus, story);
   }
 
-  async addOrDeleteFavorite(favoriteStatus, storyId) {
+  async addOrDeleteFavorite(favoriteStatus, story) {
+    const method = favoriteStatus === true ? "POST" : "DELETE";
     const token = this.loginToken;
 
-    const method = favoriteStatus === true ? "POST" : "DELETE";
-
-    const response = await axios({
-      url: `${BASE_URL}/users/${this.username}/favorites/${storyId}`,
+    await axios({
+      url: `${BASE_URL}/users/${this.username}/favorites/${story.storyId}`,
       data: { token },
       method: method,
     });

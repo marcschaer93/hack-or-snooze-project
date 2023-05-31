@@ -5,15 +5,6 @@
  */
 
 /** Show main list of all stories when click site name */
-// function navSubmit(evt) {
-//   // evt.preventDefault();
-//   console.debug("navSubmit", evt);
-//   $submitForm.show();
-//   // evt.target.$submitForm.removeClass("hidden");
-//   // $(evt.target).find("#submitForm").removeClass("hidden");
-// }
-
-// $navSubmit.on("click", navSubmit);
 
 function navSubmitStoryClick(evt) {
   console.debug("navSubmitStoryClick", evt);
@@ -51,7 +42,7 @@ function navMyStories(evt) {
   hidePageComponents();
   putMyStoriesOnPage();
 
-  $myStories.show();
+  // $myStories.show();
 }
 
 $navMyStories.on("click", navMyStories);
@@ -61,7 +52,7 @@ function navMyFavorites(evt) {
   hidePageComponents();
   putMyFavoritesStoriesOnPage();
 
-  $myFavoriteStories.show();
+  // $myFavoriteStories.show();
 }
 
 $navMyFavorites.on("click", navMyFavorites);
