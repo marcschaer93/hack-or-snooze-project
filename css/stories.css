@@ -50,18 +50,10 @@
   color: brown;
 }
 
-/* #line-1 {
-  display: flex;
-} */
-
 .main-story-content {
   display: flex;
   flex-direction: column;
   gap: 10px;
-}
-
-.delete-heart-icon {
-  /* display: flex; */
 }
 
 .inner-li {
@@ -70,4 +62,12 @@
 }
 
 .inner-title-host {
+}
+
+.fa-heart {
+  cursor: pointer;
+}
+
+.fa-trash {
+  cursor: pointer;
 }

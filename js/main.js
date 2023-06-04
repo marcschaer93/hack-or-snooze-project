@@ -5,11 +5,12 @@
 const $body = $("body");
 
 const $storiesLoadingMsg = $("#stories-loading-msg");
+//Selctors for 3 sorted lists.
 const $allStoriesList = $("#all-stories-list");
 const $myStories = $("#my-stories-list");
 const $myFavoriteStories = $("#my-favorite-stories-list");
 
-//Selector all story-lists
+//Selector all lists od Stories (all, my, myFavorited)
 const $allStoryLists = $(".stories-list");
 
 const $loginForm = $("#login-form");
@@ -17,10 +18,10 @@ const $signupForm = $("#signup-form");
 
 const $submitForm = $("#submit-form");
 
+//Selectors for Navbar
 const $navLogin = $("#nav-login");
 const $navUserProfile = $("#nav-user-profile");
 const $navLogOut = $("#nav-logout");
-// const $navSubmit = $("#nav-submit-story");
 const $navSubmitStory = $("#nav-submit-story");
 const $navMyStories = $("#nav-my-stories");
 const $navMyFavorites = $("#nav-favorite-stories");

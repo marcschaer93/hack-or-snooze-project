@@ -24,7 +24,7 @@ function generateStoryMarkup(story, showDeleteBtn = false) {
 
   const hostName = story.getHostName();
 
-  // if a user is logged in, show favorite/not-favorite star
+  // if logged in, show favorite/not-favorite "fa-heart" function
   const showHeart = Boolean(currentUser);
 
   return $(`
@@ -52,25 +52,11 @@ function generateStoryMarkup(story, showDeleteBtn = false) {
 }
 
 /** Gets list of stories from server, generates their HTML, and puts on page. */
-// function getDeleteBtnHTML() {
-//   return `
-//   <button id="deleteBtn">delete</button>
-//   `;
-// }
-
 function getDeleteBtnHTML() {
   return `
   <span><i id="deleteBtn" class="fa-sharp fa-solid fa-trash"></i></span>
   `;
 }
-
-// function getHeartHTML(story, user) {
-//   const isFavorite = user.isFavorite(story);
-//   const heartType = isFavorite ? "active" : "not-active";
-//   return `
-//   <div><button id="favoriteIcon" class=${heartType}>♥</button></div>
-//   `;
-// }
 
 function getHeartHTML(story, user) {
   const isFavorite = user.isFavorite(story);
@@ -122,7 +108,7 @@ function putMyFavoritesStoriesOnPage() {
       "<h5>No Favorite stories added by user yet!</h5>"
     );
   } else {
-    // loop through all of users stories and generate HTML for them
+    // loop through all of users Favorited stories and generate HTML for them
     for (let story of currentUser.favorites) {
       const $story = generateStoryMarkup(story);
       $myFavoriteStories.append($story);
@@ -139,7 +125,6 @@ async function deleteStory(evt) {
   const $closestLi = $(evt.target).closest("li");
   const storyId = $closestLi.attr("id");
 
-  // await storyList.removeStory(currentUser, storyId);
   await storyList.removeStory(currentUser, storyId);
   putMyStoriesOnPage();
 }
@@ -150,7 +135,6 @@ async function submitNewStory(evt) {
   console.debug("submitNewStory");
   evt.preventDefault();
   // get data
-
   const author = $("#newAuthor").val();
   const title = $("#newTitle").val();
   const url = $("#newUrl").val();
@@ -165,7 +149,6 @@ async function submitNewStory(evt) {
 
   // hide the form and reset it
   $submitForm.slideUp("slow");
-  // $submitForm.hide();
   $submitForm.trigger("reset");
 }
 

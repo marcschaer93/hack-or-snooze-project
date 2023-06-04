@@ -23,7 +23,6 @@ class Story {
   /** Parses hostname out of URL and returns it. */
 
   getHostName() {
-    // UNIMPLEMENTED: complete this function!
     return new URL(this.url).host;
     // return "hostname.com";
   }
@@ -86,7 +85,6 @@ class StoryList {
     user.ownStories.unshift(story);
 
     return story;
-    // UNIMPLEMENTED: complete this function!
   }
 
   // remove story
@@ -98,7 +96,7 @@ class StoryList {
       data: { token: user.loginToken },
     });
 
-    // filter out the story whose ID we are removing
+    // filter out the story-ID, which we are removing
     this.stories = this.stories.filter((story) => story.storyId !== storyId);
 
     // do the same thing for the user's list of stories & their favorites
@@ -217,20 +215,6 @@ class User {
       return null;
     }
   }
-
-  // async deleteFavorite(story) {
-  //   let favoriteStatus = false;
-  //   // this.favorites = this.favorites.filter((story) => {
-  //   //   story.storyId !== storyId;
-  //   // });
-
-  //   // console.log("this.favorites.delete", this.favorites);
-  //   // await this.addOrDeleteFavorite(favoriteStatus, storyId);
-
-  //   this.favorites = this.favorites.filter((s) => s.storyId !== story.storyId);
-
-  //   await this.addOrRemoveFavorite(favoriteStatus, story);
-  // }
 
   async deleteFavorite(story) {
     let favoriteStatus = false;
